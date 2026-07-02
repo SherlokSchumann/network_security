@@ -1,0 +1,16 @@
+2026-07-03 00:31:05.131041: [*] Connected by ('127.0.0.1', 60955)
+2026-07-03 00:31:12.296836: [*] Received data from ('127.0.0.1', 60955): y
+2026-07-03 00:31:14.447720: [*] Received data from ('127.0.0.1', 60955): n
+2026-07-03 00:31:18.731454: [*] Received data from ('127.0.0.1', 60955): yrd
+2026-07-03 00:31:23.026464: [*] Received data from ('127.0.0.1', 60955): yes
+2026-07-03 00:31:24.028592: [*] ('127.0.0.1', 60955) will continue connecting.
+2026-07-03 00:31:32.947670: [*] Received password from ('127.0.0.1', 60955): hello
+
+2026-07-03 00:31:45.230338: [*] Received password from ('127.0.0.1', 60955): shakespeare
+
+2026-07-03 00:32:04.935936: [*] Received password from ('127.0.0.1', 60955): penguins
+
+2026-07-03 00:32:10.718689: [*] Received password from ('127.0.0.1', 60955): exit
+
+2026-07-03 00:32:17.820970: [*] ('127.0.0.1', 60955) has closed the connection voluntarily.
+2026-07-03 00:32:17.821055: [*] Connection with ('127.0.0.1', 60955) closed.

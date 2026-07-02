@@ -1,0 +1,10 @@
+2026-07-03 00:35:19.018942: [*] Listening on 0.0.0.0:22
+2026-07-03 00:37:19.791525: [*] Accepted connection from ('192.168.1.3', 35500)
+2026-07-03 00:38:18.159283: [*] ('192.168.1.3', 35500) has exceeded the maximum number of attempts. Closing connection
+2026-07-03 00:38:18.159476: [*] Connection with ('192.168.1.3', 35500) closed.
+2026-07-03 00:38:24.670017: [*] Accepted connection from ('192.168.1.3', 55072)
+2026-07-03 00:38:27.800174: [*] ('192.168.1.3', 55072) has closed the connection by saying no.
+2026-07-03 00:38:27.800258: [*] Connection with ('192.168.1.3', 55072) closed.
+2026-07-03 00:38:34.862829: [*] Accepted connection from ('192.168.1.3', 42208)
+2026-07-03 00:38:41.909385: [*] ('192.168.1.3', 42208) has closed the connection voluntarily.
+2026-07-03 00:38:41.909469: [*] Connection with ('192.168.1.3', 42208) closed.

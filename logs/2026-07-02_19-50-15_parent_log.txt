@@ -1,0 +1,7 @@
+2026-07-02 19:50:15.457081: [*] Listening on 127.0.0.1:22
+2026-07-02 19:51:18.256949: [*] Accepted connection from ('127.0.0.1', 57748)
+2026-07-02 19:51:30.630424: [*] Accepted connection from ('127.0.0.1', 57752)
+2026-07-02 19:51:43.853938: [*] ('127.0.0.1', 57752) has closed the connection voluntarily.
+2026-07-02 19:51:43.853999: [*] Connection with ('127.0.0.1', 57752) closed.
+2026-07-02 19:51:47.805990: [*] ('127.0.0.1', 57748) has closed the connection voluntarily.
+2026-07-02 19:51:47.806033: [*] Connection with ('127.0.0.1', 57748) closed.

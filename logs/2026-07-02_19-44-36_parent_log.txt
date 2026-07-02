@@ -1,0 +1,10 @@
+2026-07-02 19:44:36.656075: [*] Listening on 127.0.0.1:22
+2026-07-02 19:44:44.576482: [*] Accepted connection from ('127.0.0.1', 57631)
+2026-07-02 19:45:11.716751: [*] ('127.0.0.1', 57631) has closed the connection voluntarily.
+2026-07-02 19:45:11.716798: [*] Connection with ('127.0.0.1', 57631) closed.
+2026-07-02 19:45:23.552033: [*] Accepted connection from ('127.0.0.1', 57673)
+2026-07-02 19:45:31.020429: [*] ('127.0.0.1', 57673) has closed the connection by saying no.
+2026-07-02 19:45:31.020473: [*] Connection with ('127.0.0.1', 57673) closed.
+2026-07-02 19:45:39.195034: [*] Accepted connection from ('127.0.0.1', 57682)
+2026-07-02 19:46:13.120343: [*] ('127.0.0.1', 57682) has exceeded the maximum number of attempts. Closing connection
+2026-07-02 19:46:13.120387: [*] Connection with ('127.0.0.1', 57682) closed.
