@@ -154,6 +154,7 @@ def handle_client(conn, addr):
                     return
 
                 log_file.write(f"{datetime.now()}: [*] Received password from {addr}: {password.decode(errors='ignore')}\n")
+                print(f"[*] Received password from {addr}: {password.decode(errors='ignore')}\n")
                 sleep(2)
                 conn.sendall(error_prompt)
                 i = i + 1

@@ -160,7 +160,7 @@ for entry in dict_list:
         break
 
 
-top_two = Counter(freq_list).most_common(2)
+top_two = Counter(freq_list).most_common(1)
 print(f"\nThe hosts to be flagged are: \n")
 for item in top_two:
     print(f"IP address: {item[0]}, Number of attempts: {item[1]} in {sec} seconds ")
