@@ -147,23 +147,23 @@ for ip, group in df.groupby("ip"):
 
 print(f"\n\n============= Flags / Warning behaviours ===========\n")
 
-# Time window: 40 seconds
+# Flag IPs with the most attempts in any 60-second window
+sec = 60
+counts = {}
+for ip, conns in dict.items():
+    ts = sorted(datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f") for s, _ in conns)
+    left = 0
+    best = 0
+    for right in range(len(ts)):
+        while (ts[right] - ts[left]).total_seconds() > sec:
+            left += 1
+        best = max(best, right - left + 1)
+    counts[ip] = best
 
-sec = 80
-look_time = 0
-freq_list = []
-for entry in dict_list:
-    ip = list(entry.keys())[0]
-    if entry[ip][0][4] <= sec:
-        freq_list.append(ip)
-    else:
-        break
-
-
-top_two = Counter(freq_list).most_common(1)
+top_two = Counter(counts).most_common(2)
 print(f"\nThe hosts to be flagged are: \n")
-for item in top_two:
-    print(f"IP address: {item[0]}, Number of attempts: {item[1]} in {sec} seconds ")
+for ip, n in top_two:
+    print(f"IP address: {ip}, Number of attempts: {n} in {sec} seconds ")
 
 print(f"\n\n")
 print(f"\n-------------------------------- End Of Analysis ------------------------------------\n")
