@@ -151,7 +151,8 @@ print(f"\n\n============= Flags / Warning behaviours ===========\n")
 sec = 60
 counts = {}
 for ip, conns in dict.items():
-    ts = sorted(datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f") for s, _ in conns)
+    fmt = "%Y-%m-%d %H:%M:%S.%f"
+    ts = sorted(datetime.strptime(s, fmt) for s, _ in conns)
     left = 0
     best = 0
     for right in range(len(ts)):

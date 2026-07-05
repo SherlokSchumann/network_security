@@ -188,29 +188,81 @@ def handle_client(conn, addr):
     return
             
 
+"""
 
+def serve(port): 
 
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        parent_log_path = os.path.join(LOG_DIR, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_parent_log.txt")
+        with open(parent_log_path, "w") as parent_log_file:
+                        
+            s.bind((HOST, PORT))
+            s.listen()
+            print(f"[*] Listening on {HOST}:{PORT}")
+            parent_log_file.write(f"{datetime.now()}: [*] Listening on {HOST}:{PORT}\n")
+            
+            try:
+            
+                while True:
+                    conn, addr = s.accept()
+                    detectClient(conn)
+                    parent_log_file.write(f"{datetime.now()}: [*] Accepted connection from {addr}\n")
+                    threading.Thread(target=handle_client, args=(conn, addr)).start()
+            except KeyboardInterrupt:
+                print("\n[!] Sever shutting down. Starting Analysis...")
+                sleep(1.5)
+                subprocess.run([sys.executable, "analyze-logs.py"])
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    parent_log_path = os.path.join(LOG_DIR, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_parent_log.txt")
-    with open(parent_log_path, "w") as parent_log_file:
-                       
-        s.bind((HOST, PORT))
-        s.listen()
-        print(f"[*] Listening on {HOST}:{PORT}")
-        parent_log_file.write(f"{datetime.now()}: [*] Listening on {HOST}:{PORT}\n")
+                sys.exit(0)
+"""
+
+sel = selectors.DefaultSelector()
+
+for port in [21, 22]:
+    lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    lsock.bind((HOST, port))
+    lsock.listen()
+    lsock.setblocking(False)
+    sel.register(lsock, selectors.EVENT_READ, data=port)
+
+print(f"[*] Listening on {HOST}: {[21, 22]}")   # or build a PORTS list variable and reuse it here
+          
+
+parent_log_path = os.path.join(LOG_DIR, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_parent_log.txt")
+
+with open(parent_log_path, "w") as parent_log_file:
+
+    parent_log_file.write(f"{datetime.now()}: [*] Listening on {HOST}: {[21, 22]}\n")
+
         
-        try:
-        
-            while True:
-                conn, addr = s.accept()
-                detectClient(conn)
-                parent_log_file.write(f"{datetime.now()}: [*] Accepted connection from {addr}\n")
-                threading.Thread(target=handle_client, args=(conn, addr)).start()
-        except KeyboardInterrupt:
-            print("\n[!] Sever shutting down. Starting Analysis...")
-            sleep(1.5)
-            subprocess.run([sys.executable, "analyze-logs.py"])
+    try:
+        while True:
+            events = sel.select(timeout = None)
 
-            sys.exit(0)
-        
+            
+            for key, _ in events:
+                lsock = key.fileobj
+                port = key.data
+                conn, addr = lsock.accept()
+                conn.setblocking(True)
+                print(f"[*] Accepted connection from {addr} on port {port}")
+                parent_log_file.write(f"{datetime.now()}: [*] Accepted connection from {addr} on port {port}\n")
+
+                match port:
+                    case 22:
+                        threading.Thread(target=handle_client, args=(conn, addr), daemon=True).start()
+                    case 21:
+                        conn.sendall(b"Bye !\n")
+                        conn.close()
+
+
+    except KeyboardInterrupt:
+
+        print("\n[!] Server shutting down. Starting Analysis.../")
+        sleep(1.5)
+        subprocess.run([sys.executable, "analyze-logs.py"])
+        sys.exit(0)
+
+    finally:
+        sel.close()
