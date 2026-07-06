@@ -1,0 +1,18 @@
+2026-07-06 11:18:25.823924: [*] Connected by ('127.0.0.1', 49461)
+2026-07-06 11:18:27.942637: [*] Received data from ('127.0.0.1', 49461): 
+2026-07-06 11:18:29.488397: [*] Received data from ('127.0.0.1', 49461): 
+2026-07-06 11:18:55.503797: [*] Received data from ('127.0.0.1', 49461): helo
+2026-07-06 11:19:07.579506: [*] Received data from ('127.0.0.1', 49461): 
+2026-07-06 11:19:14.926677: [*] Received data from ('127.0.0.1', 49461): auth login
+2026-07-06 11:19:28.432428: [*] Received username from ('127.0.0.1', 49461): user
+2026-07-06 11:20:06.953048: [*] Received password from ('127.0.0.1', 49461): pass
+2026-07-06 11:20:14.803105: [*] Received data from ('127.0.0.1', 49461): user
+2026-07-06 11:20:19.587929: [*] Received data from ('127.0.0.1', 49461): 
+2026-07-06 11:20:32.508837: [*] Received data from ('127.0.0.1', 49461): auth login
+2026-07-06 11:20:35.307155: [*] Received username from ('127.0.0.1', 49461): user
+2026-07-06 11:20:36.635034: [*] Received password from ('127.0.0.1', 49461): pwd
+2026-07-06 11:20:40.906686: [*] Received data from ('127.0.0.1', 49461): auth login
+2026-07-06 11:20:42.394805: [*] Received username from ('127.0.0.1', 49461): user
+2026-07-06 11:20:43.283592: [*] Received password from ('127.0.0.1', 49461): pas
+2026-07-06 11:20:43.283726: [*] ('127.0.0.1', 49461) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:20:43.284044: [*] Connection with ('127.0.0.1', 49461) closed.

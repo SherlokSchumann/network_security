@@ -1,0 +1,94 @@
+2026-07-06 11:13:13.669690: [*] Listening on 0.0.0.0: [21, 22]
+2026-07-06 11:13:16.018049: [*] Accepted connection from ('127.0.0.1', 49395) on port 23
+2026-07-06 11:13:30.852263: [*] ('127.0.0.1', 49395) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:13:30.852371: [*] Connection with ('127.0.0.1', 49395) closed.
+2026-07-06 11:13:57.276133: [*] Accepted connection from ('127.0.0.1', 49406) on port 80
+2026-07-06 11:13:57.306606: [*] ('127.0.0.1', 49406) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:13:57.306639: [*] Connection with ('127.0.0.1', 49406) closed.
+2026-07-06 11:13:57.362432: [*] Accepted connection from ('127.0.0.1', 49407) on port 80
+2026-07-06 11:13:57.363049: [*] ('127.0.0.1', 49407) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:13:57.363077: [*] Connection with ('127.0.0.1', 49407) closed.
+2026-07-06 11:14:04.432782: [*] Accepted connection from ('127.0.0.1', 49410) on port 80
+2026-07-06 11:14:04.434330: [*] ('127.0.0.1', 49410) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:04.434373: [*] Connection with ('127.0.0.1', 49410) closed.
+2026-07-06 11:14:06.857184: [*] Accepted connection from ('127.0.0.1', 49412) on port 80
+2026-07-06 11:14:06.858329: [*] ('127.0.0.1', 49412) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:06.858424: [*] Connection with ('127.0.0.1', 49412) closed.
+2026-07-06 11:14:11.692910: [*] Accepted connection from ('127.0.0.1', 49416) on port 80
+2026-07-06 11:14:11.694249: [*] ('127.0.0.1', 49416) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:11.694326: [*] Connection with ('127.0.0.1', 49416) closed.
+2026-07-06 11:14:17.875195: [*] Accepted connection from ('127.0.0.1', 49419) on port 80
+2026-07-06 11:14:17.876258: [*] ('127.0.0.1', 49419) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:17.876314: [*] Connection with ('127.0.0.1', 49419) closed.
+2026-07-06 11:14:24.505288: [*] Accepted connection from ('127.0.0.1', 49421) on port 80
+2026-07-06 11:14:24.506216: [*] ('127.0.0.1', 49421) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:24.506259: [*] Connection with ('127.0.0.1', 49421) closed.
+2026-07-06 11:14:57.912654: [*] Accepted connection from ('127.0.0.1', 49423) on port 80
+2026-07-06 11:14:57.914006: [*] ('127.0.0.1', 49423) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:57.914058: [*] Connection with ('127.0.0.1', 49423) closed.
+2026-07-06 11:15:05.916807: [*] Accepted connection from ('127.0.0.1', 49426) on port 80
+2026-07-06 11:15:05.918067: [*] ('127.0.0.1', 49426) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:15:05.918130: [*] Connection with ('127.0.0.1', 49426) closed.
+2026-07-06 11:15:13.213061: [*] Accepted connection from ('127.0.0.1', 49428) on port 80
+2026-07-06 11:15:13.214217: [*] ('127.0.0.1', 49428) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:15:13.214267: [*] Connection with ('127.0.0.1', 49428) closed.
+2026-07-06 11:17:18.346067: [*] Accepted connection from ('127.0.0.1', 49436) on port 80
+2026-07-06 11:17:18.347034: [*] ('127.0.0.1', 49436) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:17:18.347081: [*] Connection with ('127.0.0.1', 49436) closed.
+2026-07-06 11:17:22.440250: [*] Accepted connection from ('127.0.0.1', 49438) on port 80
+2026-07-06 11:17:22.450295: [*] ('127.0.0.1', 49438) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:17:22.450324: [*] Connection with ('127.0.0.1', 49438) closed.
+2026-07-06 11:17:32.667612: [*] Accepted connection from ('127.0.0.1', 49441) on port 80
+2026-07-06 11:17:40.204347: [*] ('127.0.0.1', 49441) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:17:40.204378: [*] Connection with ('127.0.0.1', 49441) closed.
+2026-07-06 11:18:10.742536: [*] Accepted connection from ('127.0.0.1', 49444) on port 443
+2026-07-06 11:18:10.743341: [*] Connection with ('127.0.0.1', 49444) closed.
+2026-07-06 11:18:10.747140: [*] Accepted connection from ('127.0.0.1', 49445) on port 443
+2026-07-06 11:18:10.747854: [*] Connection with ('127.0.0.1', 49445) closed.
+2026-07-06 11:18:10.750202: [*] Accepted connection from ('127.0.0.1', 49446) on port 443
+2026-07-06 11:18:10.750974: [*] Connection with ('127.0.0.1', 49446) closed.
+2026-07-06 11:18:10.752147: [*] Accepted connection from ('127.0.0.1', 49447) on port 443
+2026-07-06 11:18:10.752715: [*] Connection with ('127.0.0.1', 49447) closed.
+2026-07-06 11:18:10.759301: [*] Accepted connection from ('127.0.0.1', 49448) on port 443
+2026-07-06 11:18:10.760095: [*] Connection with ('127.0.0.1', 49448) closed.
+2026-07-06 11:18:10.761072: [*] Accepted connection from ('127.0.0.1', 49449) on port 443
+2026-07-06 11:18:10.761614: [*] Connection with ('127.0.0.1', 49449) closed.
+2026-07-06 11:18:10.762510: [*] Accepted connection from ('127.0.0.1', 49450) on port 443
+2026-07-06 11:18:10.762905: [*] Connection with ('127.0.0.1', 49450) closed.
+2026-07-06 11:18:10.763839: [*] Accepted connection from ('127.0.0.1', 49451) on port 443
+2026-07-06 11:18:10.764334: [*] Connection with ('127.0.0.1', 49451) closed.
+2026-07-06 11:18:25.823232: [*] Accepted connection from ('127.0.0.1', 49461) on port 587
+2026-07-06 11:18:26.241187: [*] Accepted connection from ('127.0.0.1', 49462) on port 443
+2026-07-06 11:18:26.241570: [*] Connection with ('127.0.0.1', 49462) closed.
+2026-07-06 11:18:26.242121: [*] Accepted connection from ('127.0.0.1', 49463) on port 443
+2026-07-06 11:18:26.242458: [*] Connection with ('127.0.0.1', 49463) closed.
+2026-07-06 11:18:26.242960: [*] Accepted connection from ('127.0.0.1', 49464) on port 443
+2026-07-06 11:18:26.243242: [*] Connection with ('127.0.0.1', 49464) closed.
+2026-07-06 11:18:26.243628: [*] Accepted connection from ('127.0.0.1', 49465) on port 443
+2026-07-06 11:18:26.243893: [*] Connection with ('127.0.0.1', 49465) closed.
+2026-07-06 11:19:07.284932: [*] Accepted connection from ('127.0.0.1', 49472) on port 443
+2026-07-06 11:19:07.285737: [*] Connection with ('127.0.0.1', 49472) closed.
+2026-07-06 11:19:07.287433: [*] Accepted connection from ('127.0.0.1', 49473) on port 443
+2026-07-06 11:19:07.288060: [*] Connection with ('127.0.0.1', 49473) closed.
+2026-07-06 11:19:07.289408: [*] Accepted connection from ('127.0.0.1', 49474) on port 443
+2026-07-06 11:19:07.289974: [*] Connection with ('127.0.0.1', 49474) closed.
+2026-07-06 11:19:07.291506: [*] Accepted connection from ('127.0.0.1', 49475) on port 443
+2026-07-06 11:19:07.292637: [*] Connection with ('127.0.0.1', 49475) closed.
+2026-07-06 11:19:44.658795: [*] Accepted connection from ('127.0.0.1', 49483) on port 443
+2026-07-06 11:19:44.659640: [*] Connection with ('127.0.0.1', 49483) closed.
+2026-07-06 11:19:44.661315: [*] Accepted connection from ('127.0.0.1', 49484) on port 443
+2026-07-06 11:19:44.661869: [*] Connection with ('127.0.0.1', 49484) closed.
+2026-07-06 11:19:44.663315: [*] Accepted connection from ('127.0.0.1', 49485) on port 443
+2026-07-06 11:19:44.663939: [*] Connection with ('127.0.0.1', 49485) closed.
+2026-07-06 11:19:44.665688: [*] Accepted connection from ('127.0.0.1', 49486) on port 443
+2026-07-06 11:19:44.666387: [*] Connection with ('127.0.0.1', 49486) closed.
+2026-07-06 11:20:17.294849: [*] Accepted connection from ('127.0.0.1', 49497) on port 443
+2026-07-06 11:20:17.295754: [*] Connection with ('127.0.0.1', 49497) closed.
+2026-07-06 11:20:17.297549: [*] Accepted connection from ('127.0.0.1', 49498) on port 443
+2026-07-06 11:20:17.298217: [*] Connection with ('127.0.0.1', 49498) closed.
+2026-07-06 11:20:17.299690: [*] Accepted connection from ('127.0.0.1', 49499) on port 443
+2026-07-06 11:20:17.300341: [*] Connection with ('127.0.0.1', 49499) closed.
+2026-07-06 11:20:17.301799: [*] Accepted connection from ('127.0.0.1', 49500) on port 443
+2026-07-06 11:20:17.302498: [*] Connection with ('127.0.0.1', 49500) closed.
+2026-07-06 11:20:43.283739: [*] ('127.0.0.1', 49461) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:20:43.284055: [*] Connection with ('127.0.0.1', 49461) closed.

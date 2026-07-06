@@ -34,9 +34,343 @@ error_prompt = b"Permission denied, please try again.\n"
 terminal_prompt = b"debian@admin_machine.local:~$ "
 
 
-#====== Analyze logs ========
+#======== FTP Client Handler (port 21) ==========
+def handle_ftp(conn, addr):
 
-# moved to another file
+    log_path = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{addr[0]}_{addr[1]}.txt")
+    with conn, open(log_path, "w") as log_file:
+
+        try:
+            print(f"[*] Connected by {addr} on port 21")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 21\n")
+
+            conn.sendall(b"220 (vsFTPd 3.0.5)\r\n")
+
+            attempts = 0
+            while attempts < 4:
+                data = recv_line(conn)
+
+                if not data:
+                    print(f"[*] No data received from {addr}. Closing connection.")
+                    log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    conn.close()
+                    return
+
+                command = data.decode(errors='ignore').strip()
+                print(f"[*] Received data from {addr}: {command}")
+                log_file.write(f"{datetime.now()}: [*] Received data from {addr}: {command}\n")
+
+                if command.lower().startswith("user"):
+                    conn.sendall(b"331 Please specify the password.\r\n")
+                    password = recv_line(conn)
+
+                    if not password:
+                        print(f"[*] No password recieved from {addr}. Closing connection.")
+                        log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        conn.close()
+                        return
+
+                    log_file.write(f"{datetime.now()}: [*] Received password from {addr}: {password.decode(errors='ignore')}\n")
+                    print(f"[*] Received password from {addr}: {password.decode(errors='ignore')}\n")
+                    conn.sendall(b"530 Login incorrect.\r\n")
+                    attempts = attempts + 1
+                else:
+                    conn.sendall(b"530 Please login with USER and PASS.\r\n")
+
+            # After exiting the loop
+            conn.sendall(b"421 Service not available, remote server has closed connection\r\n")
+            log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            parent_log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            conn.close()
+
+        except (ConnectionResetError, ConnectionAbortedError) as e:
+            print(f"[*] Connection with {addr} was closed unexpectedly: {e}")
+            log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+
+        except Exception as e:
+            print(f"[*] An unexpectederror occurred with {addr}: {e}")
+            log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+
+        finally:
+            if conn:
+                conn.close()
+            if log_file:
+                log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                log_file.close()
+
+    return
+
+
+#======== Telnet Client Handler (port 23) ==========
+def handle_telnet(conn, addr):
+
+    log_path = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{addr[0]}_{addr[1]}.txt")
+    with conn, open(log_path, "w") as log_file:
+
+        try:
+            print(f"[*] Connected by {addr} on port 23")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 23\n")
+
+            conn.sendall(b"\r\nUbuntu 22.04.3 LTS\r\n")
+            sleep(0.5)
+
+            attempts = 0
+            while attempts < 3:
+                conn.sendall(b"login: ")
+                username = recv_line(conn)
+
+                if not username:
+                    print(f"[*] No data received from {addr}. Closing connection.")
+                    log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    conn.close()
+                    return
+
+                log_file.write(f"{datetime.now()}: [*] Received data from {addr}: {username.decode(errors='ignore').strip()}\n")
+                print(f"[*] Received data from {addr}: {username.decode(errors='ignore').strip()}")
+
+                conn.sendall(b"\nPassword: ")
+                conn.sendall(IAC + WILL + ECHO)
+                password = recv_line(conn)
+                conn.sendall(IAC + WONT + ECHO)
+
+                if not password:
+                    print(f"[*] No password recieved from {addr}. Closing connection.")
+                    log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    conn.close()
+                    return
+
+                log_file.write(f"{datetime.now()}: [*] Received password from {addr}: {password.decode(errors='ignore')}\n")
+                print(f"[*] Received password from {addr}: {password.decode(errors='ignore')}\n")
+                sleep(1)
+                conn.sendall(b"\r\nLogin incorrect\r\n\r\n")
+                attempts = attempts + 1
+
+            # After exiting the loop
+            conn.sendall(b"\r\nAttempts exceeded. You have been logged !!\r\n\r\n")
+            log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            parent_log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            conn.close()
+
+        except (ConnectionResetError, ConnectionAbortedError) as e:
+            print(f"[*] Connection with {addr} was closed unexpectedly: {e}")
+            log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+
+        except Exception as e:
+            print(f"[*] An unexpectederror occurred with {addr}: {e}")
+            log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+
+        finally:
+            if conn:
+                conn.close()
+            if log_file:
+                log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                log_file.close()
+
+    return
+
+
+#======== SMTP Client Handler (port 587) ==========
+def handle_smtp(conn, addr):
+
+    log_path = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{addr[0]}_{addr[1]}.txt")
+    with conn, open(log_path, "w") as log_file:
+
+        try:
+            print(f"[*] Connected by {addr} on port 587")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 587\n")
+
+            conn.sendall(b"220 mail.exchange.com ESMTP Postfix (Debian/GNU)\r\n")
+
+            attempts = 0
+            while attempts < 3:
+                data = recv_line(conn)
+
+                if not data:
+                    print(f"[*] No data received from {addr}. Closing connection.")
+                    log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    conn.close()
+                    return
+
+                command = data.decode(errors='ignore').strip()
+                print(f"[*] Received data from {addr}: {command}")
+                log_file.write(f"{datetime.now()}: [*] Received data from {addr}: {command}\n")
+
+                if command.lower().startswith("ehlo") or command.lower().startswith("helo"):
+                    conn.sendall(b"250-mail.example.com Hello\r\n250-PIPELINING\r\n250-SIZE 10240000\r\n250-STARTTLS\r\n250-AUTH LOGIN PLAIN\r\n250 8BITMIME\r\n")
+
+                elif command.lower().startswith("auth login"):
+                    conn.sendall(b"334 VXNlcm5hbWU6 Username:\r\n")
+                    username = recv_line(conn)
+
+                    if not username:
+                        print(f"[*] No data received from {addr}. Closing connection.")
+                        log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        conn.close()
+                        return
+
+                    log_file.write(f"{datetime.now()}: [*] Received username from {addr}: {username.decode(errors='ignore').strip()}\n")
+
+                    conn.sendall(b"334 UGFzc3dvcmQ6 Password:\r\n")
+                    password = recv_line(conn)
+
+                    if not password:
+                        print(f"[*] No password recieved from {addr}. Closing connection.")
+                        log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                        conn.close()
+                        return
+
+                    log_file.write(f"{datetime.now()}: [*] Received password from {addr}: {password.decode(errors='ignore').strip()}\n")
+                    print(f"[*] Received password from {addr}: {password.decode(errors='ignore').strip()}\n")
+                    conn.sendall(b"535 5.7.8 Authentication credentials invalid\r\n")
+                    attempts = attempts + 1
+
+                else:
+                    conn.sendall(b"500 5.5.1 Command unrecognized\r\n")
+
+            # After exiting the loop
+            conn.sendall(b"421 4.7.0 Too many errors, closing connection.\r\n")
+            log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            parent_log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            conn.close()
+
+        except (ConnectionResetError, ConnectionAbortedError) as e:
+            print(f"[*] Connection with {addr} was closed unexpectedly: {e}")
+            log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+
+        except Exception as e:
+            print(f"[*] An unexpectederror occurred with {addr}: {e}")
+            log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+
+        finally:
+            if conn:
+                conn.close()
+            if log_file:
+                log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                log_file.close()
+
+    return
+
+
+#======== HTTP Client Handler (port 80) ==========
+def handle_http(conn, addr):
+
+    log_path = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{addr[0]}_{addr[1]}.txt")
+    with conn, open(log_path, "w") as log_file:
+
+        try:
+            print(f"[*] Connected by {addr} on port 80")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 80\n")
+
+            body = b"<html><body><h1>401 Unauthorized</h1><form method='POST' action='/login'>Username: <input name='u'><br>Password: <input name='p' type='password'><br><input type='submit'></form></body></html>"
+            response = b"HTTP/1.1 200 OK\r\nServer: Apache/2.4.58 (Debian)\r\nContent-Type: text/html\r\nContent-Length: " + str(len(body)).encode() + b"\r\nConnection: keep-alive\r\n\r\n" + body
+
+            attempts = 0
+            while attempts < 3:
+                data = recv_line(conn)
+
+                if not data:
+                    print(f"[*] No data received from {addr}. Closing connection.")
+                    log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                    conn.close()
+                    return
+
+                request_line = data.decode(errors='ignore').strip()
+                print(f"[*] Received data from {addr}: {request_line}")
+                log_file.write(f"{datetime.now()}: [*] Received data from {addr}: {request_line}\n")
+
+                conn.sendall(response)
+                attempts = attempts + 1
+
+            # After exiting the loop
+            log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            parent_log_file.write(f"{datetime.now()}: [*] {addr} has exceeded the maximum number of attempts. Closing connection\n")
+            conn.close()
+
+        except (ConnectionResetError, ConnectionAbortedError) as e:
+            print(f"[*] Connection with {addr} was closed unexpectedly: {e}")
+            log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+
+        except Exception as e:
+            print(f"[*] An unexpectederror occurred with {addr}: {e}")
+            log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+
+        finally:
+            if conn:
+                conn.close()
+            if log_file:
+                log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                log_file.close()
+
+    return
+
+
+#======== HTTPS Client Handler (port 443) ==========
+# No certificate is configured, so a real TLS handshake can't be completed here.
+# just peek at the raw ClientHello bytes for logging/fingerprinting.
+def handle_https(conn, addr):
+
+    log_path = os.path.join(LOG_DIR, f"log_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_{addr[0]}_{addr[1]}.txt")
+    with conn, open(log_path, "w") as log_file:
+
+        try:
+            print(f"[*] Connected by {addr} on port 443")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 443\n")
+
+            data = conn.recv(4096)
+
+            if not data:
+                print(f"[*] No data received from {addr}. Closing connection.")
+                log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] {addr} has closed the connection voluntarily.\n")
+                conn.close()
+                return
+
+            print(f"[*] Received TLS ClientHello ({len(data)} bytes) from {addr}")
+            log_file.write(f"{datetime.now()}: [*] Received TLS ClientHello ({len(data)} bytes) from {addr}\n")
+            conn.close()
+
+        except (ConnectionResetError, ConnectionAbortedError) as e:
+            print(f"[*] Connection with {addr} was closed unexpectedly: {e}")
+            log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} was closed unexpectedly: {e}\n")
+
+        except Exception as e:
+            print(f"[*] An unexpectederror occurred with {addr}: {e}")
+            log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+            parent_log_file.write(f"{datetime.now()}: [*] An error occurred with {addr}: {e}\n")
+
+        finally:
+            if conn:
+                conn.close()
+            if log_file:
+                log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                parent_log_file.write(f"{datetime.now()}: [*] Connection with {addr} closed.\n")
+                log_file.close()
+
+    return
+
+
+
 
 
 
@@ -83,8 +417,8 @@ def handle_client(conn, addr):
 
             # Write the initial log
             # attacker with this IP has connected at this time
-            print(f"[*] Connected by {addr}")
-            log_file.write(f"{datetime.now()}: [*] Connected by {addr}\n")
+            print(f"[*] Connected by {addr} on port 21")
+            log_file.write(f"{datetime.now()}: [*] Connected by {addr} on port 21\n")
 
             # Simulate initial messages and log client output
             conn.sendall(ssh_version_banner)
@@ -218,7 +552,9 @@ def serve(port):
 
 sel = selectors.DefaultSelector()
 
-for port in [21, 22]:
+ports = [21, 22, 23, 587, 443, 80]
+
+for port in ports:
     lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     lsock.bind((HOST, port))
@@ -226,7 +562,7 @@ for port in [21, 22]:
     lsock.setblocking(False)
     sel.register(lsock, selectors.EVENT_READ, data=port)
 
-print(f"[*] Listening on {HOST}: {[21, 22]}")   # or build a PORTS list variable and reuse it here
+print(f"[*] Listening on {HOST}: {ports}")   # or build a PORTS list variable and reuse it here
           
 
 parent_log_path = os.path.join(LOG_DIR, f"{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}_parent_log.txt")
@@ -253,8 +589,17 @@ with open(parent_log_path, "w") as parent_log_file:
                     case 22:
                         threading.Thread(target=handle_client, args=(conn, addr), daemon=True).start()
                     case 21:
-                        conn.sendall(b"Bye !\n")
-                        conn.close()
+                        threading.Thread(target=handle_ftp, args=(conn, addr), daemon=True).start()
+                    case 23:
+                        threading.Thread(target=handle_telnet, args=(conn, addr), daemon=True).start()
+                    case 587:
+                        threading.Thread(target=handle_smtp, args=(conn, addr), daemon=True).start()
+                    case 80:
+                        threading.Thread(target=handle_http, args=(conn, addr), daemon=True).start()
+                    case 443:
+                        threading.Thread(target=handle_https, args=(conn, addr), daemon=True).start()
+
+                        
 
 
     except KeyboardInterrupt:
