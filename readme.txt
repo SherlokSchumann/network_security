@@ -1,6 +1,8 @@
 SSH HONEYPOT
 ============
 
+Note Jul 6 2026: Support for multiple ports has been added
+
 A lightweight SSH honeypot written in Python for a Network Security
 project. It listens on a TCP port, impersonates an OpenSSH server, and logs
 everything an attacker does — including the passwords they try — without
