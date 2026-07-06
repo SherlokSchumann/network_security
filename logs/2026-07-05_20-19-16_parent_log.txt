@@ -1,0 +1,4 @@
+2026-07-05 20:19:16.929419: [*] Listening on 0.0.0.0: [21, 22]
+2026-07-05 20:19:19.909994: [*] Accepted connection from ('127.0.0.1', 49695) on port 22
+2026-07-05 20:19:21.412404: [*] An error occurred with ('127.0.0.1', 49695): [Errno 35] Resource temporarily unavailable
+2026-07-05 20:19:21.412458: [*] Connection with ('127.0.0.1', 49695) closed.

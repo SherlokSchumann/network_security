@@ -1,0 +1,6 @@
+2026-07-06 11:14:24.506035: [*] Connected by ('127.0.0.1', 49421)
+2026-07-06 11:14:24.506114: [*] Received data from ('127.0.0.1', 49421): POST /login HTTP/1.1
+2026-07-06 11:14:24.506153: [*] Received data from ('127.0.0.1', 49421): 
+2026-07-06 11:14:24.506201: [*] Received data from ('127.0.0.1', 49421): Host: 127.0.0.1
+2026-07-06 11:14:24.506212: [*] ('127.0.0.1', 49421) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:14:24.506255: [*] Connection with ('127.0.0.1', 49421) closed.

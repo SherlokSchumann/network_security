@@ -1,0 +1,6 @@
+2026-07-06 11:13:57.362880: [*] Connected by ('127.0.0.1', 49407)
+2026-07-06 11:13:57.362957: [*] Received data from ('127.0.0.1', 49407): GET /favicon.ico HTTP/1.1
+2026-07-06 11:13:57.362994: [*] Received data from ('127.0.0.1', 49407): 
+2026-07-06 11:13:57.363037: [*] Received data from ('127.0.0.1', 49407): Host: 127.0.0.1
+2026-07-06 11:13:57.363046: [*] ('127.0.0.1', 49407) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:13:57.363074: [*] Connection with ('127.0.0.1', 49407) closed.

@@ -1,0 +1,7 @@
+2026-07-06 11:10:51.550494: [*] Listening on 0.0.0.0: [21, 22]
+2026-07-06 11:11:01.722137: [*] Accepted connection from ('127.0.0.1', 49370) on port 23
+2026-07-06 11:11:18.292598: [*] ('127.0.0.1', 49370) has closed the connection voluntarily.
+2026-07-06 11:11:18.292678: [*] Connection with ('127.0.0.1', 49370) closed.
+2026-07-06 11:11:19.867968: [*] Accepted connection from ('127.0.0.1', 49373) on port 23
+2026-07-06 11:12:13.849929: [*] ('127.0.0.1', 49373) has exceeded the maximum number of attempts. Closing connection
+2026-07-06 11:12:13.850030: [*] Connection with ('127.0.0.1', 49373) closed.

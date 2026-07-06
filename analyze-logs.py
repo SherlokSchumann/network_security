@@ -37,6 +37,28 @@ OPEN_LINE_PATTERN = CONNECTED_LINE_PATTERN = re.compile(
     r"Connected by \('(?P<ip>\d{1,3}(?:\.\d{1,3}){3})', (?P<port>\d+)\)$"
 )
 
+PARENT_LOG_PATTERN = re.compile(r"^.*_parent_log\.txt$")
+
+# The port the attacker actually targeted (21/22/23/80/443/587), as recorded
+# in the parent log. Older parent logs predate multi-port support and only
+# ever ran the SSH honeypot, so they omit "on port X" -> default to 22.
+PARENT_ACCEPT_PATTERN = re.compile(
+    r"^(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d+): \[\*\] "
+    r"Accepted connection from \('(?P<ip>\d{1,3}(?:\.\d{1,3}){3})', (?P<client_port>\d+)\)"
+    r"(?: on port (?P<target_port>\d+))?$"
+)
+
+attacked_port = {}  # (ip, client_port) -> targeted service port
+
+for file in os.listdir(LOG_DIR):
+    if not PARENT_LOG_PATTERN.match(file):
+        continue
+    with open(os.path.join(LOG_DIR, file), "r") as parent_log:
+        for line in parent_log:
+            match = PARENT_ACCEPT_PATTERN.match(line)
+            if match:
+                attacked_port[(match.group("ip"), match.group("client_port"))] = match.group("target_port") or "22"
+
 
 IPs = {}
 
@@ -56,8 +78,9 @@ for file in files:
         IPs[ip]["count"] = count + 1
         IPs[ip]["date"].append(date)
         IPs[ip]["time"].append(time)
+        IPs[ip]["port"].append(port)
     else:
-        IPs[ip] = {"count": 1, "date": [date], "time": [time], "port": port}
+        IPs[ip] = {"count": 1, "date": [date], "time": [time], "port": [port]}
     
 
 # print(f"IPs: {IPs}")
@@ -108,7 +131,7 @@ print(f"\n")
 
 dict_list = []
 
-key = ("date", "login_time", "start_time", "end_time", "elapsed_time_after_prev_login")
+key = ("date", "login_time", "port", "start_time", "end_time", "elapsed_time_after_prev_login")
 for ip in ip_list:
     for i in range(counts[ip]):
       
@@ -123,11 +146,12 @@ for ip in ip_list:
             dt1 = datetime.strptime(start_time_prev, fmt)
             diff = abs((dt2 - dt1).total_seconds())
 
-        info = {ip: [(IPs[ip]["date"][i], IPs[ip]["time"][i].replace("-", ":"), dict[ip][i][0].split(" ")[1], dict[ip][i][1].split(" ")[1], diff)]}
+        port = attacked_port.get((ip, IPs[ip]["port"][i]), "22")
+        info = {ip: [(IPs[ip]["date"][i], IPs[ip]["time"][i].replace("-", ":"), port, dict[ip][i][0].split(" ")[1], dict[ip][i][1].split(" ")[1], diff)]}
         dict_list.append(info)
 
 
-columns = ["date", "login_time", "start_time", "end_time", "elapsed_time_after_prev_login"]
+columns = ["date", "login_time", "port", "start_time", "end_time", "elapsed_time_after_prev_login"]
 
 # flatten: {ip: [(...)]} entries -> rows with ip attached
 rows = []
@@ -151,7 +175,8 @@ print(f"\n\n============= Flags / Warning behaviours ===========\n")
 sec = 60
 counts = {}
 for ip, conns in dict.items():
-    ts = sorted(datetime.strptime(s, "%Y-%m-%d %H:%M:%S.%f") for s, _ in conns)
+    fmt = "%Y-%m-%d %H:%M:%S.%f"
+    ts = sorted(datetime.strptime(s, fmt) for s, _ in conns)
     left = 0
     best = 0
     for right in range(len(ts)):
