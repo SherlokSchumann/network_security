@@ -1,4 +1,4 @@
-#!/bin/bash\
+#!/bin/bash
 # ==============================================================================\
 # CAPE Sandbox Behavior Verification Script\
 # Purpose: Simulates Defense Evasion & Persistence Actions (Benign)\
